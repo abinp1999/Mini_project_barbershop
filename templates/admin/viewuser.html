@@ -1,0 +1,46 @@
+{% extends "admin/admin_sub_index.html" %}
+{% block body %}
+
+    <form method="post" action="/adminviewuserssearchpost">
+    <table class="pull-left">
+    <tr>
+
+        <td>
+            <input type="text" placeholder="Search here" class="form-control" name="search">
+        </td>
+        <td>
+            <input type="submit" class="btn btn-success" value="Search"/>
+        </td>
+    </tr>
+</table>
+    <br>
+<table width="200" border="1" class="table table-bordered">
+  <tr>
+    <td>Sno</td>
+    <td>Name</td>
+    <td>Age</td>
+      <td>Gender</td>
+       <td>Phone</td>
+       <td>Email</td>
+       <td>Photo</td>
+       <td>Place</td>
+       <td>Post</td>
+       <td>Pin</td>
+  </tr>
+    {% for i in data %}
+        <tr>
+    <td>{{ loop.index }}</td>
+    <td>{{ i['username'] }}</td>
+    <td>{{ i['age'] }}</td>
+     <td>{{ i['gender'] }}</td>
+         <td>{{ i['phone'] }}</td>
+         <td>{{ i['email'] }}</td>
+         <td> <img src="{{ i['photo'] }}" width="90px" height="90px" /></td>
+         <td>{{ i['place'] }}</td>
+         <td>{{ i['post'] }}</td>
+         <td>{{ i['pin'] }}</td>
+        </tr>
+    {% endfor %}
+</table>
+</form>
+{% endblock %}

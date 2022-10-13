@@ -1,0 +1,29 @@
+{% extends "barbershop/sub_index.html" %}
+{% block body %}
+<form id="form1" name="form1" method="post" action="">
+  <table width="200" border="1">
+    <tr>
+      <td>Sno</td>
+      <td>Date</td>
+      <td>From</td>
+      <td>Rating</td>
+      <td>Review</td>
+    </tr>
+    {% for i in data %}
+      <tr>
+        <td>{{ loop.index }}</td>
+        <td>{{ i['date'] }}</td>
+        <td>{{ i['username'] }}</td>
+        <td>{{ i['rating'] }}</td>
+        <td>{{ i['review'] }}</td>
+      </tr>
+
+      {% endfor %}
+
+
+
+
+  </table>
+</form>
+
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends "user/sub_index.html" %}
+{% block body %}
+<form action="/bsignup_post" method="post" enctype="multipart/form-data" name="form1" id="form1">
+
+    <img src="{{ data['photo'] }}" width="200px" height="200px"/>
+    <br>
+    <table>
+    <tr>
+      <td>Name</td>
+      <td>{{ data['username'] }}</td>
+    </tr>
+    <tr>
+      <td>Age</td>
+      <td>{{ data['age'] }}</td>
+    </tr>
+
+    <tr>
+      <td>Gender</td>
+      <td>{{ data['gender'] }}</td>
+    </tr>
+
+    <tr>
+      <td>Place</td>
+      <td>{{ data['place'] }}</td>
+    </tr>
+    <tr>
+      <td>Post</td>
+      <td>{{ data['post'] }}</td>
+    </tr>
+    <tr>
+      <td>Pin</td>
+      <td>{{ data['pin'] }}</td>
+    </tr>
+
+    <tr>
+      <td>Phone</td>
+      <td>{{ data['phone'] }}</td>
+    </tr>
+    <tr>
+      <td>Email</td>
+      <td>{{ data['email'] }}</td>
+    </tr>
+
+
+
+  </table>
+</form>
+
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends "barbershop/sub_index.html" %}
+{% block body %}
+<form method="post" action="/addservice_post">
+<table class="table table-bordered">
+  <tr>
+      <th>Sno</th>
+    <th>Service name</th>
+    <th>Description</th>
+    <th>Rate</th>
+      <th></th>
+      <th></th>
+  </tr>
+    {% for i in data %}
+    <tr>
+        <td width="50px">{{ loop.index }}</td>
+        <td>{{ i['service_name'] }}</td>
+        <td>{{ i['Description'] }}</td>
+        <td width="50px"> {{ i['rate'] }}</td>
+        <td width="50px"><a class="btn btn-success" href = "/edit_service/{{ i['service_id'] }}">Edit</a></td>
+        <td width="50px"><a class="btn btn-danger" href = "/delete_Service/{{i['service_id'] }}">Delete</a></td>
+    </tr>
+    {% endfor %}
+</table>
+
+</form>
+
+{% endblock %}

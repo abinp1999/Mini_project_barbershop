@@ -1,0 +1,26 @@
+{% extends "barbershop/sub_index.html" %}
+{% block body %}
+<form id="form1" name="form1" method="post" action="">
+  <table width="200" border="1">
+    <tr>
+      <td>Service</td>
+      <td><label for="textfield"></label><input type="hidden" name="h1" value="{{ data['service_id'] }}">
+      <input type="text" name="textfield" id="textfield" value="{{ data['service_name'] }}" /></td>
+    </tr>
+    <tr>
+      <td>Description</td>
+      <td><label for="textarea"></label>
+      <input type name="textarea" id="textarea" value="{{ data['Description'] }}" ></input></td>
+    </tr>
+    <tr>
+      <td>Rate</td>
+      <td><label for="textfield2"></label>
+      <input type="text" name="textfield2" id="textfield2" value="{{ data['rate'] }}"/></td>
+    </tr>
+    <tr>
+      <td colspan="2"><input type="submit" name="button" id="button" value="Add" /></td>
+    </tr>
+  </table>
+</form>
+
+{% endblock %}

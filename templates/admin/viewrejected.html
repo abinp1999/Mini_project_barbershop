@@ -1,0 +1,58 @@
+{% extends "admin/admin_sub_index.html" %}
+{% block body %}
+<form method="post" action="/adminviewrejectedbarbershopsearch">
+
+
+<table class="pull-left">
+    <tr>
+
+        <td>
+            <input type="text" placeholder="Search here" class="form-control" name="search">
+        </td>
+        <td>
+            <input type="submit" class="btn btn-success" value="Search"/>
+        </td>
+    </tr>
+</table>
+<br>
+
+<table class="table table-bordered">
+  <tr>
+    <th>Sno</th>
+    <th>Name</th>
+    <th>Image</th>
+      <th>Address</th>
+
+      <th>Latitude</th>
+      <th>Longitude</th>
+      <th>Phone</th>
+      <th>Email</th>
+
+      <th>ShopType</th>
+      <th>Liscence</th>
+        </tr>
+    {% for i in data %}
+    <tr>
+    <td>{{ loop.index }}</td>
+     <td>{{ i['shop_name'] }}</td>
+    <td><img src="{{ i['shop_image'] }}" alt="no image" width="35px" height="35px"></td>
+    <td>{{ i['shop_place'] }} <br>{{ i['shop_post'] }} <br>
+        {{ i['shop_district'] }}
+        <br>
+
+    {{ i['shop_pin'] }}
+    </td>
+        <td>{{ i['shop_latitude'] }}</td>
+    <td>{{ i['shop_longitude'] }}</td>
+    <td>{{ i['shop_phone'] }}</td>
+        <td>{{ i['shop_email'] }}</td>
+
+    <td>{{ i['shop_type'] }}</td>
+        <td>{{ i['shop_liscence'] }}</td>
+          </tr>
+    {% endfor %}
+
+</table>
+   </form>
+
+{% endblock %}

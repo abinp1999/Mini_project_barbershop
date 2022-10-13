@@ -1,0 +1,42 @@
+{% extends "user/sub_index.html" %}
+{% block body %}
+<form method="post" action="/userbooking">
+<table>
+    <tr>
+        <td>Date</td>
+        <td>
+            <input type="date" name="date" class="form-control" required>
+        </td>
+    </tr>
+    <tr>
+        <td>Time</td>
+        <td>
+            <input type="time" class="form-control" name="time"/>
+        </td>
+    </tr>
+
+</table>
+
+
+
+
+<table class="table table-bordered">
+  <tr>
+    <th></th>
+    <th>Service name</th>
+    <th>Description</th>
+    <th>Rate</th>
+  </tr>
+    {% for i in data %}
+    <tr>
+        <td width="50px"><input type="checkbox" name="check1" value="{{ i['service_id'] }}"></td>
+        <td>{{ i['service_name'] }}</td>
+        <td>{{ i['Description'] }}</td>
+        <td width="50px">{{ i['rate'] }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<input type="submit" value="Submit" class="btn btn-success">
+</form>
+{% endblock %}

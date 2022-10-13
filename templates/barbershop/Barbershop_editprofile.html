@@ -1,0 +1,87 @@
+{% extends "barbershop/sub_index.html" %}
+{% block body %}
+<form action="/bsignup_edit_post" method="post" enctype="multipart/form-data" name="form1" id="form1">
+  <table class="table table-bordered">
+    <tr>
+      <td width="150px">Name</td>
+      <td>
+      <input type="text" class="form-control" required name="textfield" id="textfield" value="{{ data['shop_name'] }}" />
+      <input type="hidden" class="form-control" required name="id" id="textfield" value="{{ data['shop_lid'] }}" />
+
+
+
+      </td>
+    </tr>
+    <tr>
+      <td>Photo</td>
+      <td>
+      <input type="file" class="form-control"  name="fileField" id="fileField" /></td>
+    </tr>
+    <tr>
+      <td>Place</td>
+      <td>
+      <input type="text" class="form-control" required name="textfield1" id="textfield1" value="{{ data['shop_place'] }}" /></td>
+    </tr>
+    <tr>
+      <td>Post</td>
+      <td>
+      <input type="text" class="form-control" required name="textfield2" id="textfield2" value="{{ data['shop_post'] }}" /></td>
+    </tr>
+    <tr>
+      <td>Pin</td>
+      <td>
+      <input type="text" class="form-control" required name="textfield3" id="textfield3" value="{{ data['shop_pin'] }}" /></td>
+    </tr>
+    <tr>
+      <td>district</td>
+      <td>
+      <input type="text" name="textfield4" class="form-control" required id="textfield4" value="{{ data['shop_district'] }}" /></td>
+    </tr>
+    <tr>
+      <td>Lattitude</td>
+      <td>
+      <input type="text"  class="form-control" required name="textfield5" id="textfield5" value="{{ data["shop_latitude"] }}" /></td>
+    </tr>
+    <tr>
+      <td>Longitude</td>
+      <td>
+      <input type="text" name="textfield6"  class="form-control" required value="{{ data['shop_longitude'] }}" id="textfield6" /></td>
+    </tr>
+    <tr>
+      <td>Phone</td>
+      <td>
+      <input type="text" name="textfield7"  class="form-control" required id="textfield7"  class="form-control" required value="{{ data['shop_phone'] }}" /></td>
+    </tr>
+    <tr>
+      <td>Email</td>
+      <td>
+      <input type="text" name="textfield8"  class="form-control" required id="textfield8" value="{{ data['shop_email'] }}" /></td>
+    </tr>
+
+    <tr>
+      <td>Type</td>
+      <td>
+          <select name="textfield10">
+              <option value="Gents">Gents</option>
+              <option value="Ladies">Ladies</option>
+              <option value="Unisex">Unisex</option>
+
+          </select>
+
+      </td>
+    </tr>
+    <tr>
+      <td>Liscence</td>
+      <td>
+      <input class="form-control" required type="text" name="textfield11" id="textfield11" value="{{ data['shop_liscence'] }}" /></td>
+    </tr>
+
+
+    <tr>
+        <td></td>
+      <td ><input type="submit" class="btn btn-success" name="button" id="button" value="Update Profile" /></td>
+    </tr>
+  </table>
+</form>
+
+{% endblock %}

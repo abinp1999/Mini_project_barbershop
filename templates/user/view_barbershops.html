@@ -1,0 +1,101 @@
+{% extends "user/sub_index.html" %}
+{% block body %}
+
+
+    <style>
+
+    </style>
+
+<form method="post" action="/user_viewbarbershopssearchpost">
+<div align="center"><table class="table table-borderless" style="width: 70%">
+    <tr>
+        <td>Search</td>
+        <td>
+            <input type="text" class="form-control" name="search"/>
+        </td>
+        <td>
+            <input type="submit" class="btn btn-success" value="Search">
+        </td>
+    </tr>
+</table>
+</div>
+
+</form>
+
+
+    <section >
+  <div class="container">
+      {%  for i in data %}
+
+
+    <div class="row justify-content-center mb-3">
+      <div class="col-md-12 col-xl-10">
+        <div class="card shadow-0 border rounded-3">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-12 col-lg-3 col-xl-3 mb-4 mb-lg-0">
+                <div class="bg-image hover-zoom ripple rounded ripple-surface">
+                  <img src="{{ i['shop_image'] }}"
+                    class="w-100" />
+                  <a href="#!">
+                    <div class="hover-overlay">
+                      <div class="mask" style="background-color: rgba(253, 253, 253, 0.15);"></div>
+                    </div>
+                  </a>
+                </div>
+              </div>
+              <div class="col-md-6 col-lg-6 col-xl-6">
+                <h5>{{ i['shop_name'] }}</h5>
+                <div class="d-flex flex-row">
+{#                  <div class="text-danger mb-1 me-2">#}
+{#                    <i class="fa fa-star"></i>#}
+{#                    <i class="fa fa-star"></i>#}
+{#                    <i class="fa fa-star"></i>#}
+{#                    <i class="fa fa-star"></i>#}
+{#                  </div>#}
+                    <br>
+                  <span>{{ i['shop_type'] }}</span>
+                    <br>
+                </div>
+                <div class="mt-1 mb-0 text-muted small">
+                  {{ i['shop_place'] }}
+                    <br>
+                    {{ i['shop_post'] }}
+                    <br>
+                    {{ i['shop_district'] }}
+                    <br>
+                    {{ i['shop_pin'] }}
+                </div>
+                <div class="mb-2 text-muted small">
+                  <span style="color: red">Email Us:{{ i['shop_email'] }}</span>
+                  <span class="text-primary"> <br> </span>
+                  <span style="color: blue">{{ i['shop_phone'] }}</span>
+
+                </div>
+
+              </div>
+              <div class="col-md-6 col-lg-3 col-xl-3 border-sm-start-none border-start">
+
+
+                <div class="d-flex flex-column mt-4">
+                  <a class="btn btn-primary btn-sm" href="/userviewservices/{{ i['shop_lid'] }}" type="button">Services</a>
+                  <button class="btn btn-outline-primary btn-sm mt-2" type="button">
+                    Reviews
+                  </button>
+                     <a class="btn btn-outline-primary btn-sm mt-2" href="http://maps.google.com?q={{ i['shop_latitude'] }},{{ i['shop_longitude'] }}" type="button">
+                    GotoMap
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+      {% endfor %}
+
+  </div>
+</section>
+
+{% endblock %}

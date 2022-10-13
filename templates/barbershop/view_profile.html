@@ -1,0 +1,60 @@
+{% extends "barbershop/sub_index.html" %}
+{% block body %}
+<form action="/bsignup_post" method="post" enctype="multipart/form-data" name="form1" id="form1">
+
+    <img src="{{ data['shop_image'] }}" width="200px" height="200px"/>
+    <br>
+    <table class="table table-bordered">
+    <tr>
+      <td>Name</td>
+      <td>{{ data['shop_name'] }}</td>
+    </tr>
+
+    <tr>
+      <td>Place</td>
+      <td>{{ data['shop_place'] }}</td>
+    </tr>
+    <tr>
+      <td>Post</td>
+      <td>{{ data['shop_post'] }}</td>
+    </tr>
+    <tr>
+      <td>Pin</td>
+      <td>{{ data['shop_pin'] }}</td>
+    </tr>
+    <tr>
+      <td>District</td>
+      <td>{{ data['shop_district'] }}</td>
+    </tr>
+    <tr>
+      <td>Lattitude</td>
+      <td>{{ data['shop_latitude'] }}</td>
+    </tr>
+    <tr>
+      <td>Longitude</td>
+      <td>{{ data['shop_longitude'] }}</td>
+    </tr>
+    <tr>
+      <td>Phone</td>
+      <td>{{ data['shop_phone'] }}</td>
+    </tr>
+    <tr>
+      <td>Email</td>
+      <td>{{ data['shop_email'] }}</td>
+    </tr>
+
+    <tr>
+      <td>Type</td>
+      <td>{{ data['shop_type'] }}
+
+      </td>
+    </tr>
+    <tr>
+      <td>Liscence</td>
+      <td>{{ data['shop_liscence'] }}</td>
+    </tr>
+
+  </table>
+</form>
+
+{% endblock %}

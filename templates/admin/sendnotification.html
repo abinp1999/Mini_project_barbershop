@@ -1,0 +1,25 @@
+{% extends "admin/admin_sub_index.html" %}
+{% block body %}
+
+<form action="/snotific_post" method="post" name="form1">
+    <table  class="table table-bordered">
+        <tr>
+            <td width="150px">Notification</td>
+            <td>
+                <textarea name="text1" class="form-control"></textarea>
+            </td>
+        </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <input type="submit" name="submit" class="btn btn-success" value="Submit">
+            </td>
+        </tr>
+
+
+    </table>
+
+</form>
+
+{% endblock %}
