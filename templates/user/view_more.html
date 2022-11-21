@@ -1,0 +1,36 @@
+{% extends 'user/sub_index.html' %}
+{% block body %}
+<body>
+<table class="table table-bordered">
+    <tr>
+        <th>Sl No</th>
+        <th>Service Name</th>
+        <th>Description</th>
+        <th>Price</th>
+        <th colspan="2"></th>
+    </tr>
+    {% for i in data %}
+    <tr>
+        <td>{{ loop.index }}</td>
+        <td>{{ i['service_name'] }}</td>
+        <td>{{ i['Description'] }}</td>
+        <td>{{ i['rate'] }}</td>
+
+
+
+    </tr>
+         {% endfor %}
+<tr>
+    <td colspan="3">Total</td><td>{{ data1['a'] }}</td>
+</tr>
+        <tr><td>
+            {% if paid %}
+            <a href="/payment/{{ data1['book_id'] }}" class="btn btn-outline-success">Payment</a>
+            {% else %}
+            Payment Completed
+            {% endif %}
+        </td>
+        </tr>
+</table>
+</body>
+{% endblock %}

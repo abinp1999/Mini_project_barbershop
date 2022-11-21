@@ -2,7 +2,7 @@ from flask import *
 from DBConnection import*
 db=Db()
 
-static_path="F:\\saloon mini project 111\\barbershop\\barbershop\\static\\"
+static_path="F:\\mini project final\\barbershop\\static\\"
 
 app = Flask(__name__)
 app.secret_key ="hii"
@@ -25,6 +25,7 @@ def login_post():
     pswd=request.form['textfield2']
     qry="select * from login WHERE username='"+un+"'and password='"+pswd+"'"
     res = db.selectOne(qry)
+    print(res)
     if res is not None:
         session['lid']=res['login_id']
         if res['type']=='admin':
@@ -70,41 +71,57 @@ def barber_home():
     return render_template('barbershop/home.html')
 
 
+@app.route('/check_user')
+def check_user():
+    db = Db()
+    uname = request.args.get('cc')
+    qry = "select * from login where username = '"+uname+"'"
+    res = db.selectOne(qry)
+    if res is not None:
+        return jsonify(status = "ok")
+    else:
+        return jsonify(status = "no")
+
+@app.route('/check_barber')
+def check_barber():
+    db = Db()
+    uname = request.args.get('cc')
+    qry = "select * from login where username = '"+uname+"'"
+    res = db.selectOne(qry)
+    if res is not None:
+        return jsonify(status = "ok")
+    else:
+        return jsonify(status = "no")
+
 @app.route('/bsignup')
 def signup():
-    return render_template('barbershop/Barbershop_signup.html')
-
+    # return render_template('barbershop/Barbershop_signup.html')
+    return render_template('barbersubindes.html')
 
 @app.route('/bsignup_post',methods=['post'])
 def signup_post():
     db=Db()
     name=request.form['textfield']
     photo=request.files['fileField']
-
-
     from datetime import datetime
     filename=datetime.now().strftime("%Y%m%d%H%M%S")
-
-
-
     photo.save(static_path+"\\photo\\"+ filename+".jpg")
     file="/static/photo/"+filename+".jpg"
-
-
     place=request.form['textfield1']
     post=request.form['textfield2']
     pin=request.form['textfield3']
     dist=request.form['textfield4']
-    latti=request.form['textfield5']
-    longi=request.form['textfield6']
+    # latti=request.form['textfield5']
+    # longi=request.form['textfield6']
     phone=request.form['textfield7']
     email=request.form['textfield8']
-    type=request.form['textfield10']
+    type=request.form['types']
     lisc=request.form['textfield11']
-    pswd=request.form['textfield12']
-    qry1="insert into login values('','"+email+"','"+pswd+"','shop')"
+    pswd=request.form['textfield8']
+    cpswd=request.form['textfield12']
+    qry1="insert into login values('','"+email+"','"+cpswd+"','shop')"
     lid=db.insert(qry1)
-    qry="INSERT INTO `barber_shop` (`shop_lid`,`shop_name`,`shop_image`,`shop_place`,`shop_post`,`shop_pin`,`shop_district`,`shop_latitude`,`shop_longitude`,`shop_phone`,`shop_email`,`shop_status`,`shop_type`,`shop_liscence`) VALUES ('"+str(lid)+"','"+name+"','"+file+"','"+place+"','"+post+"','"+pin+"','"+dist+"','"+latti+"','"+longi+"','"+phone+"','"+email+"','pending','"+type+"','"+lisc+"')"
+    qry="INSERT INTO `barber_shop` (`shop_lid`,`shop_name`,`shop_image`,`shop_place`,`shop_post`,`shop_pin`,`shop_district`,`shop_latitude`,`shop_longitude`,`shop_phone`,`shop_email`,`shop_status`,`shop_type`,`shop_liscence`) VALUES ('"+str(lid)+"','"+name+"','"+file+"','"+place+"','"+post+"','"+pin+"','"+dist+"','12345','67890','"+phone+"','"+email+"','pending','"+type+"','"+lisc+"')"
     res=db.insert(qry)
     return '''<script>alert("registration successfull");window.location="/bsignup"</script>'''
 
@@ -114,10 +131,6 @@ def bsignup_edit_post():
     db=Db()
 
     name=request.form['textfield']
-
-
-
-
     place=request.form['textfield1']
     post=request.form['textfield2']
     pin=request.form['textfield3']
@@ -232,6 +245,22 @@ def editform_post():
 def addservice():
     return render_template('barbershop/add_service_barbershop.html')
 
+@app.route('/check_addservice')
+def check_addservice():
+    s_name=request.args.get('cc')
+    print(s_name)
+    # s_name=request.form['textfield']
+
+    db=Db()
+    qry="select * from services where service_name='"+s_name+"' and service_lid='"+str(session['lid'])+"'"
+    # res=db.select(qry)
+    res=db.selectOne(qry)
+    if res is not None:
+        return jsonify(status="no")
+    else:
+        return jsonify(status="yes")
+
+
 
 @app.route('/addservice_post',methods=['post'])
 def addservice_post():
@@ -239,7 +268,7 @@ def addservice_post():
     des=request.form['textarea']
     rate=request.form['textfield2']
     db=Db()
-    qry = "INSERT INTO `services`(`service_lid`,`service_name`,`Description`,`rate`) VALUES('"+str(session['lid'])+"','"+service+"','"+des+"','"+rate+"')"
+    qry = "INSERT INTO `services`(`service_lid`,`service_name`,`Description`,`rate`,date) VALUES('"+str(session['lid'])+"','"+service+"','"+des+"','"+rate+"',curdate())"
     res = db.insert(qry)
     return redirect('/addservice')
 
@@ -275,6 +304,37 @@ def edit_servicepost():
     qry = "UPDATE `services` SET `service_name`='"+service+"', `Description`='"+description+"', `rate`='"+rate+"' WHERE `service_id`='"+str(sid)+"'"
     res = db.update(qry)
     return redirect('/vservices')
+
+
+@app.route('/bs_view_booking')
+def bs_view_booking():
+    db = Db()
+    qry = "SELECT `booking main`.*,`users`.`username`,`users`.`place`,`users`.`phone` FROM `booking main` INNER JOIN `users` ON `users`.`user_lid`=`booking main`.`user_lid` WHERE `booking main`.`shop_lid`='"+str(session['lid'])+"'"
+    res = db.select(qry)
+    return render_template('barbershop/view_booking.html',data=res)
+
+@app.route('/bs_view_booking_post', methods=['post'])
+def bs_view_booking_post():
+    frm = request.form['d1']
+    to = request.form['d2']
+    db = Db()
+    qry = "SELECT `booking main`.*,`users`.`username`,`users`.`gender`,`users`.`phone` FROM `booking main` INNER JOIN `users` ON `users`.`user_lid`=`booking main`.`user_lid` WHERE `booking main`.`shop_lid`='37' AND `booking main`.`date` BETWEEN '"+frm+"' AND '"+to+"'"
+    res = db.select(qry)
+    return render_template('barbershop/view_booking.html',data=res)
+
+@app.route('/bs_booking_more/<id>')
+def bs_booking_more(id):
+    db = Db()
+    qry = "SELECT `booking_sub`.*, `services`.* ,`booking main`.* FROM `booking_sub` INNER JOIN `booking main` ON `booking main`.`Book_id`=`booking_sub`.`book_id` INNER JOIN `services` ON `services`.`service_id`=`booking_sub`.`service_id` WHERE `booking main`.`Book_id`='"+str(id)+"'"
+    res = db.select(qry)
+    return render_template('barbershop/view_more.html',data=res)
+
+@app.route('/approve_booking/<id>')
+def approve_booking(id):
+    db = Db()
+    qry = "UPDATE `booking main` SET `status`='approved' WHERE `Book_id`='"+str(id)+"'"
+    res = db.update(qry)
+    return '''<script>alert('Approved');window.location='/bs_view_booking'</script>'''
 
 @app.route('/admin_approvebarbershop')
 def vapproved():
@@ -410,7 +470,7 @@ def admin_changepasswordpost():
         db.update(qry)
         return "<script>alert('Password changed successfully'); window.location='/'</script>"
     else:
-        return "<script>alert('Invalid details given'); window.location='/'</script>"
+        return "<script>alert('Invalid details given'); window.location='/admin_changepassword'</script>"
 
 
 
@@ -418,7 +478,7 @@ def admin_changepasswordpost():
 
 @app.route('/usersignup')
 def usersignup():
-    return render_template('user/usersignup.html')
+    return render_template('usersignupsub.html')
 
 @app.route("/userbooking",methods=['post'])
 def userbooking():
@@ -456,6 +516,74 @@ def userviewmybookingpost():
     return  render_template("user/viewmybooking.html",data=res)
 
 
+@app.route('/my_book_more/<id>')
+def my_book_more(id):
+    db = Db()
+    qry = "SELECT `booking_sub`.*, `services`.* ,`booking main`.* FROM `booking_sub` INNER JOIN `booking main` ON `booking main`.`Book_id`=`booking_sub`.`book_id` INNER JOIN `services` ON `services`.`service_id`=`booking_sub`.`service_id` WHERE `booking main`.`Book_id`='"+str(id)+"'"
+    res = db.select(qry)
+    qry1 ="SELECT SUM(`services`.rate)AS a,`booking_sub`.*, `services`.* ,`booking main`.* FROM `booking_sub` INNER JOIN `booking main` ON `booking main`.`Book_id`=`booking_sub`.`book_id` INNER JOIN `services` ON `services`.`service_id`=`booking_sub`.`service_id` WHERE `booking main`.`Book_id`='"+str(id)+"' "
+    res1=db.selectOne(qry1)
+    qry2="SELECT * FROM `payment` INNER JOIN `booking main` ON`order_main_id` = `Book_id`  WHERE payment.`order_main_id`='"+str(id)+"'"
+    res2=db.selectOne(qry2)
+    print(res2)
+    if res2 is None:
+        return render_template('user/view_more.html', data=res, data1=res1, paid='Payment Completed')
+    else:
+        return render_template('user/view_more.html',data=res,data1=res1)
+
+@app.route('/payment/<id>')
+def payment(id):
+    db=Db()
+    qry="SELECT SUM(`services`.rate)AS a,`booking_sub`.*, `services`.* ,`booking main`.* FROM `booking_sub` INNER JOIN `booking main` ON `booking main`.`Book_id`=`booking_sub`.`book_id` INNER JOIN `services` ON `services`.`service_id`=`booking_sub`.`service_id` WHERE `booking main`.`Book_id`='"+str(id)+"' "
+    res=db.selectOne(qry)
+    return render_template('user/payment.html',data=res)
+
+
+
+@app.route('/purchase_post', methods=['POST'])
+def purchase_post():
+    book_id=request.form['book_id']
+    acc = request.form["a1"]
+    pin = request.form["a2"]
+    amount=request.form['amount']
+    d = Db()
+    qry2 = "select * from bank where account_no='" + str(acc) + "'and pin='" + str(pin) + "'"
+    res2 = d.selectOne(qry2)
+    if res2 != None:
+        if float(res2['amount']) >= float(amount):
+            amd = float(res2['amount']) - float(amount)
+            qry3 = "update bank set amount='" + str(amd) + "' where account_no='" + str(acc) + "'"
+            d.update(qry3)
+            qry="INSERT INTO `payment`(`amount`,`account_no`,`order_main_id`,`status`,`date`)VALUES('"+str(amount)+"','"+acc+"','"+str(book_id)+"','paid',curdate())"
+            res=db.insert(qry)
+
+            return redirect('/userviewmybooking')
+        return '''<script>alert('payment success');window.location='/userviewmybooking'</script>'''
+    else:
+        return '''<script>alert('Not Success');window.location='/userviewmybooking'</script>'''
+
+@app.route('/user_view_review/<id>')
+def user_view_review(id):
+    db=Db()
+    qry="SELECT `review`.*,`users`.* FROM `review` INNER JOIN `users` ON `review`.`user_lid`=`users`.`user_lid` WHERE `review`.`shop_id`='"+id+"'"
+    res=db.select(qry)
+    qry2="select * from barber_shop where shop_lid='"+id+"'"
+    res2=db.selectOne(qry2)
+    return render_template('user/view_review.html',data=res,data2=res2)
+
+@app.route('/user_add_review')
+def user_add_review():
+    return render_template('user/Review.html')
+
+@app.route('/user_add_review_post', methods=['POST'])
+def user_add_review_post():
+    shop_id=request.form['shop_id']
+    review = request.form['review']
+    Rating = request.form['rating']
+    db=Db()
+    qry="insert into review (user_lid,review,date,shop_id,rating)VALUES ('"+str(session['lid'])+"','"+review+"',curdate(),'"+str(shop_id)+"','"+str(Rating)+"')"
+    res=db.insert(qry)
+    return '''<script>alert("review added successfull");window.location="/user_viewbarbershops"</script>'''
 
 
 @app.route('/usersignup_post',methods=['post'])
@@ -475,7 +603,8 @@ def usersignup_post():
     post=request.form['textfield6']
     pin=request.form['textfield7']
     pswd=request.form['textfield8']
-    qry1 = "insert into login values('','" + email + "','" + pswd + "','user')"
+    cpswd=request.form['textfield9']
+    qry1 = "insert into login values('','" + email + "','" + cpswd + "','user')"
     lid = db.insert(qry1)
     qry="INSERT INTO `users`(user_lid,username,age,gender,phone,email,photo,place,post,pin) VALUES ('"+str(lid)+"','"+uname+"','"+age+"','"+gender+"','"+phone+"','"+email+"','"+file+"','"+place+"','"+post+"','"+pin+"')"
     db.insert(qry)
@@ -536,7 +665,8 @@ def userviewprofile():
 def barbershopviewreviews():
     qry1="SELECT `review`.*,`users`.* FROM `users` INNER JOIN `review` ON `review`.`user_lid`=`users`.`user_lid` WHERE `review`.`shop_id`='"+str(session['lid'])+"'"
     reviews= db.select(qry1)
-    return  render_template("barbershop/viewreviews.html",data=reviews)
+    return  render_template("barbershop/view_review.html",data=reviews)
+    # return  render_template("barbershop/viewreviews.html",data=reviews)
 
 @app.route("/barbershop_changepassword")
 def barbershop_changepassword():
@@ -554,11 +684,8 @@ def barbershop_changepasswordpost():
         db.update(qry)
         return "<script>alert('Password changed successfully'); window.location='/'</script>"
     else:
-        return "<script>alert('Invalid details given'); window.location='/'</script>"
+        return "<script>alert('Invalid details given'); window.location='/barbershop_changepassword'</script>"
 
-@app.route("/user_changepassword")
-def user_changepassword():
-    return  render_template("user/Changepassword.html")
 @app.route("/userviewservices/<slid>")
 def userviewservices(slid):
     session["shoplid"]=slid
@@ -578,6 +705,9 @@ def userviewreviews(slid):
 
 
 
+@app.route("/user_changepassword")
+def user_changepassword():
+    return  render_template("user/Changepassword.html")
 
 @app.route("/user_changepasswordpost",methods=['post'])
 def user_changepasswordpost():
@@ -591,7 +721,7 @@ def user_changepasswordpost():
         db.update(qry)
         return "<script>alert('Password changed successfully'); window.location='/'</script>"
     else:
-        return "<script>alert('Invalid details given'); window.location='/'</script>"
+        return "<script>alert('Invalid details given'); window.location='/user_changepassword'</script>"
 
 
 

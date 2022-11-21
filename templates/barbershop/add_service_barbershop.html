@@ -5,17 +5,17 @@
     <tr>
       <td>Service</td>
       <td>
-      <input type="text" class="form-control" name="textfield" id="textfield" /></td>
+      <input type="text" class="form-control" name="textfield" id="textfield"  required/></td>
     </tr>
     <tr>
       <td>Description</td>
       <td>
-      <textarea name="textarea" class="form-control" id="textarea" cols="45" rows="5"></textarea></td>
+      <textarea name="textarea" class="form-control" id="textarea" cols="45" rows="5" required></textarea></td>
     </tr>
     <tr>
       <td>Rate</td>
       <td>
-      <input type="text" class="form-control" name="textfield2" id="textfield2" /></td>
+      <input type="text" class="form-control" name="textfield2" id="textfield2" required/></td>
     </tr>
     <tr>
         <td></td>
@@ -23,5 +23,67 @@
     </tr>
   </table>
 </form>
+<!--<script>-->
+<!--function fun(){-->
+  <!--$(document).ready(function(){-->
+    <!--$("#s_name").change(function(){-->
+        <!--ty=$(this).val();-->
+        <!--&lt;!&ndash;alert(ty)&ndash;&gt;-->
+        <!--$.ajax({-->
+          <!--url:'/check_addservice',-->
+          <!--type:'POST',-->
+          <!--data:{type:ty},-->
+          <!--dataType:'json',-->
+          <!--success:function (res){-->
+              <!--if(res.status=="ok")-->
+              <!--{-->
+              <!--alert("new ?")-->
+              <!--}else{-->
+              <!--document.getElementById("s_name").value="";-->
+              <!--alert("already exists!")-->
+              <!--}-->
+              <!--},error:function(res){-->
+              <!--}-->
+
+          <!--});-->
+        <!--});-->
+  <!--});-->
+  <!--}-->
+<!--</script>-->
+
+ <script src="/static/launching/js/jquery-2.2.3.min.js"></script>
+
+    <script>
+
+    $(document).ready(function () {
+
+
+        $(document).on('change','#textfield',function () {
+
+            var ii=$(this).val();
+
+
+ $.getJSON("/check_addservice",{
+                 cc:ii
+                },function (data) {
+
+
+                if(data["status"]=="no"){
+
+                    $("#button").hide();
+                    alert("already exists")
+                }else {
+                     $("#button").show();
+
+                }
+
+                });
+
+
+        });
+ });
+
+    </script>
+
 
 {% endblock %}

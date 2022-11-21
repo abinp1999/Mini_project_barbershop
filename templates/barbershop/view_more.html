@@ -1,0 +1,28 @@
+{% extends 'barbershop/sub_index.html' %}
+{% block body %}
+<body>
+<table class="table table-bordered">
+    <tr>
+        <th>Sl No</th>
+        <th>Service Name</th>
+        <th>Description</th>
+        <th colspan="2"></th>
+    </tr>
+    {% for i in data %}
+    <tr>
+        <td>{{ loop.index }}</td>
+        <td>{{ i['service_name'] }}</td>
+        <td>{{ i['Description'] }}</td>
+        {% if i['status']=='pending' %}
+        <td><a href="/approve_booking/{{ i['Book_id'] }}" class="btn btn-outline-success">Approve</a> </td>
+        <td><a href="" class="btn btn-outline-danger">Reject</a> </td>
+    {% else %}
+    <td>Approved</td>
+    {% endif %}
+    </tr>
+
+
+    {% endfor %}
+</table>
+</body>
+{% endblock %}

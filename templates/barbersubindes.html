@@ -1,0 +1,160 @@
+<!--Author: W3layouts
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+-->
+<!--{#<!DOCTYPE HTML>#}-->
+<html lang="zxx">
+
+<head>
+	<title>Latest Login Form Responsive Widget Template :: w3layouts</title>
+	<!-- Meta tag Keywords -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta charset="UTF-8" />
+	<meta name="keywords" content="Latest Login Form Responsive Widget,Login form widgets, Sign up Web forms , Login signup Responsive web form,Flat Pricing table,Flat Drop downs,Registration Forms,News letter Forms,Elements" />
+	<script>
+		addEventListener("load", function () {
+			setTimeout(hideURLbar, 0);
+		}, false);
+
+		function hideURLbar() {
+			window.scrollTo(0, 1);
+		}
+	</script>
+	<!-- Meta tag Keywords -->
+
+	<!-- css files -->
+	<link rel="stylesheet" href="/static/login/css/style.css" type="text/css" media="all" />
+	<!-- Style-CSS -->
+	<link href="/static/login/css/font-awesome.min.css" rel="stylesheet">
+	<!-- Font-Awesome-Icons-CSS -->
+	<!-- //css files -->
+
+	<!-- web-fonts -->
+	<link href="//fonts.googleapis.com/css?family=Source+Sans+Pro:200,200i,300,300i,400,400i,600,600i,700,700i,900,900i&amp;subset=cyrillic,cyrillic-ext,greek,greek-ext,latin-ext,vietnamese"
+	 rel="stylesheet">
+	<!-- //web-fonts -->
+</head>
+
+<body>
+	<div class="main-bg">
+		<!-- title -->
+		<h1>Login Here</h1>
+		<!-- //title -->
+		<!-- content -->
+		<div class="sub-main-w3">
+			<div class="bg-content-w3pvt">
+				<!--<div class="top-content-style">-->
+					<!--<img src="/static/login/images/user.jpg" alt="" />-->
+				<!--</div>-->
+				<form action="/bsignup_post" method="post" enctype="multipart/form-data">
+					<p class="legend">Shops sign up Here<span class="fa fa-hand-o-down"></span></p>
+					<div class="input">
+						<input type="text" placeholder="Name" name="textfield" required />
+						<span class="fa fa-envelope"></span>
+					</div>
+					<div class="input">
+						<input type="file" placeholder="photo" name="fileField" required />
+						<span class="fa fa-envelope"></span>
+					</div>
+					<div class="input">
+						<input type="email" placeholder="Email" name="textfield8" id="textfield8" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required />
+						<span class="fa fa-envelope"></span>
+					</div>
+					<div class="input">
+						<input type="text" placeholder="Phone" name="textfield7" pattern="[0-9]{10}" required />
+						<span class="fa fa-envelope"></span>
+					</div>
+
+					<div class="input">
+						<input type="text" placeholder="Place" name="textfield1" required />
+						<span class="fa fa-envelope"></span>
+					</div>
+
+
+					<div class="input">
+						<input type="text" placeholder="Post" name="textfield2" required />
+						<span class="fa fa-envelope"></span>
+					</div>
+
+
+					<div class="input">
+						<input type="number" placeholder="pin" name="textfield3"  pattern="[6]" maxlength="6" required />
+						<span class="fa fa-envelope"></span>
+					</div>
+
+					<div class="input">
+						<input type="text" placeholder="District" name="textfield4" required />
+						<span class="fa fa-envelope"></span>
+					</div>
+
+					<div class="input">
+						<input type="number" placeholder="License number" maxlength="8" name="textfield11" required />
+						<span class="fa fa-envelope"></span>
+					</div>
+
+					<div class="input">Type :
+						<!--<input type="text" placeholder="Type "  name="textfield10" required />-->
+						<input type="radio" name="types" id="types" value="Gents">Gents<br>
+						<input type="radio" name="types" id="types1" value="Ladies">Ladies<br>
+						<input type="radio" name="types" id="types2" value="Others">Others
+					</div>
+					<div class="input">
+						<input type="password" placeholder="Password" id="textfield9" name="textfield9" required />
+						<span class="fa fa-unlock"></span>
+					</div>
+					<div class="input">
+						<input type="password" placeholder="Confirm Password" id="textfield12"  name="textfield12" required />
+						<span class="fa fa-unlock"></span>
+					</div>
+					<button type="submit" id="btn" class="btn submit" onclick="Validate()">
+						<span class="fa fa-sign-in"></span>
+					</button>
+					<a style="color:white;" href="/login" class="btn submit">
+						Back
+					</a>
+				</form>
+				<!--<a href="/bsignup" class="bottom-text-w3ls">Barbershop signup</a>-->
+				<!--<a href="/usersignup" class="bottom-text-w3ls">User signup</a>-->
+
+
+			</div>
+		</div>
+				<script type="text/javascript">
+    function Validate() {
+        var password = document.getElementById("textfield9").value;
+        var confirmPassword = document.getElementById("textfield12").value;
+        if (password != confirmPassword) {
+            alert("Passwords do not match.");
+            return false;
+        }
+        return true;
+    }
+</script>
+                <script src="/static/web/js/jquery-2.2.3.min.js"></script>
+                <script>
+        $(document).ready(function () {
+        $(document).on('keyup','#textfield8',function () {
+            var uname = $(this).val();
+            $.getJSON("/check_barber", {cc: uname},
+                function (data) {
+                    if (data["status"] == "ok") {
+                        $("#btn").hide();
+                        alert("Email already exists");
+                    } else {
+                        $("#btn").show();
+                    }
+
+                });
+
+        });
+    });
+</script>
+		<!-- //content -->
+		<!-- copyright -->
+
+		<!-- //copyright -->
+	</div>
+</body>
+
+</html>

@@ -1,0 +1,38 @@
+{% extends "barbershop/sub_index.html" %}
+{% block body %}
+<body>
+<form method="post" action="/bs_view_booking_post">
+    <table>
+        <tr>
+            <th>From</th>
+            <td><input type="date" name="d1" class="form-control" required></td>
+            <th>To</th>
+            <td><input type="date" name="d2" class="form-control" required></td>
+            <td><input type="submit" name="s1" value="SEARCH" class="btn btn-success"></td>
+        </tr>
+    </table>
+    <table class="table table-bordered">
+        <tr>
+            <th>Sl No</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>User Info </th>
+            <th>Status</th>
+            <th></th>
+        </tr>
+        {% for i in data %}
+         <tr>
+         <td>{{ loop.index }}</td>
+         <td>{{ i['date'] }}</td>
+         <td>{{ i['time'] }}</td>
+         <td>{{ i['username'] }}<br>{{ i['place'] }}<br>{{ i['phone'] }}</td>
+         <td>{{ i['status'] }}</td>
+         <td><a href="/bs_booking_more/{{ i['Book_id'] }}" class="btn btn-outline-info">View More</a> </td>
+
+         </tr>
+        {% endfor %}
+
+    </table>
+</form>
+</body>
+{% endblock %}

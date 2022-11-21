@@ -1,4 +1,6 @@
 <style>
+
+
     body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6,
 pre, form, fieldset, input, textarea, p, blockquote, th, td {
   padding:0;
@@ -202,18 +204,19 @@ a.button:hover {
   <form method="post" action="/usersignup_post"  enctype="multipart/form-data">
       <hr>
 
-  <label id="icon" for="textfield"><i class="icon-envelope "></i></label>
-  <input type="text" name="textfield" id="name" placeholder="Name" required/>
-
-      <label id="icon" for="textfield2"><i class="icon-user"></i></label>
-  <input type="text" name="textfield2" id="name" placeholder="Age" required/>
+  <label id="ico" for="textfield"><i class="icon-envelope "></i></label>
+  <input type="text" name="textfield" id="nae" placeholder="Name" required/>
+      <i class="icon-user"></i></label>
+  <input type="text" name="textfield2" id="n" placeholder="Age" minlength="1" maxlength="2" >
      <br>
      <br>
       <div class="gender">
-    <input type="radio" value="None" id="male" name="radiobutton" checked/>
+    <input type="radio" value="male" id="male" name="radiobutton" checked/>
     <label for="male" class="radio" checked>Male</label>
-    <input type="radio" value="None" id="female" name="radiobutton" />
+    <input type="radio" value="female" id="female" name="radiobutton" />
     <label for="female" class="radio">Female</label>
+    <input type="radio" value="other" id="other" name="radiobutton" />
+    <label for="female" class="radio">Other</label>
    </div>
 
 
