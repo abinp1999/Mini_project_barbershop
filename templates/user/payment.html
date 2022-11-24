@@ -1,20 +1,25 @@
 {% extends 'user/sub_index.html' %}
 {% block body %}
-<form method="post" action="/purchase_post">
+<form method="post" enctype="multipart/form-data" action="/purchase_post">
+
+    <img src="/static/qrs.jpg" width="150px" height="150px"/>
+
+
     <table class="table table-bordered">
-        <input type="hidden" name="book_id" value="{{ data['Book_id'] }}"/>
-        <input type="hidden" name="amount" value="{{ data['a'] }}"/>
+        <input type="hidden" name="book_id" value="{{ data['Book_id'] }}" />
+        <input type="hidden" name="amount" value="{{ data['a'] }}" />
+
+
         <tr>
             <th>Amount</th>
             <td>{{ data['a'] }}</td>
         </tr>
+
         <tr>
-            <th>Account No</th>
-            <td><input type="text" name="a1" class="form-control" required></td>
-        </tr>
-        <tr>
-            <th>Pin No</th>
-            <td><input type="text" name="a2" class="form-control" required></td>
+            <td>Browse</td>
+            <td>
+                <input type="file" name="file" class="form-control" required/>
+            </td>
         </tr>
         <tr>
             <td><input type="submit"  class="btn btn-outline-success" ></td>

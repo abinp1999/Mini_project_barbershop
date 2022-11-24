@@ -2,7 +2,7 @@ from flask import *
 from DBConnection import*
 db=Db()
 
-static_path="F:\\mini project final\\barbershop\\static\\"
+static_path="C:\\Users\\abinp\\OneDrive\\Desktop\\barbershop\\barbershop\\static\\"
 
 app = Flask(__name__)
 app.secret_key ="hii"
@@ -486,21 +486,38 @@ def userbooking():
     date= request.form["date"]
     time= request.form["time"]
 
-    qry="INSERT INTO `booking main` (`user_lid`,`shop_lid`,`amount`,`status`,`date`,`time`) VALUES ('"+str(session['lid'])+"','"+session["shoplid"]+"','0','pending','"+date+"','"+time+"')"
-    db=Db()
-    bookingmasterid=db.insert(qry)
 
-    serviceids= request.form.getlist("check1")
 
-    for i in serviceids:
-        qry="INSERT INTO `booking_sub` (`book_id`,`service_id`) VALUES ('"+str(bookingmasterid)+"','"+i+"')"
-        db.insert(qry)
+    from datetime import datetime
 
-    return "<script>alert('Service booking done successfully');window.location='/user_viewbarbershops'</script>"
+    dt= datetime.strptime(date,"%Y-%m-%d")
+    import calendar
+
+    print('day Name:', dt.strftime('%A'))
+
+
+    ss=dt.strftime('%A')
+
+    if ss=="Sunday":
+
+        return "<script>alert('Sunday not working');window.location='/user_viewbarbershops'</script>"
+    else:
+
+        qry="INSERT INTO `booking main` (`user_lid`,`shop_lid`,`amount`,`status`,`date`,`time`) VALUES ('"+str(session['lid'])+"','"+session["shoplid"]+"','0','pending','"+date+"','"+time+"')"
+        db=Db()
+        bookingmasterid=db.insert(qry)
+
+        serviceids= request.form.getlist("check1")
+
+        for i in serviceids:
+            qry="INSERT INTO `booking_sub` (`book_id`,`service_id`) VALUES ('"+str(bookingmasterid)+"','"+i+"')"
+            db.insert(qry)
+
+        return "<script>alert('Service booking done successfully');window.location='/user_viewbarbershops'</script>"
 
 @app.route("/userviewmybooking")
 def userviewmybooking():
-    qry="SELECT `booking main`.*,`barber_shop`.* FROM `barber_shop` INNER JOIN `booking main` ON `barber_shop`.`shop_lid`=`booking main`.`shop_lid` WHERE `user_lid`='"+str(session["lid"])+"'"
+    qry="SELECT `booking main`.*,`barber_shop`.* FROM `barber_shop` INNER JOIN `booking main` ON `barber_shop`.`shop_lid`=`booking main`.`shop_lid` WHERE `user_lid`='"+str(session["lid"])+"' order by date "
     db=Db()
     res=db.select(qry)
     return  render_template("user/viewmybooking.html",data=res)
@@ -543,33 +560,42 @@ def payment(id):
 @app.route('/purchase_post', methods=['POST'])
 def purchase_post():
     book_id=request.form['book_id']
-    acc = request.form["a1"]
-    pin = request.form["a2"]
-    amount=request.form['amount']
-    d = Db()
-    qry2 = "select * from bank where account_no='" + str(acc) + "'and pin='" + str(pin) + "'"
-    res2 = d.selectOne(qry2)
-    if res2 != None:
-        if float(res2['amount']) >= float(amount):
-            amd = float(res2['amount']) - float(amount)
-            qry3 = "update bank set amount='" + str(amd) + "' where account_no='" + str(acc) + "'"
-            d.update(qry3)
-            qry="INSERT INTO `payment`(`amount`,`account_no`,`order_main_id`,`status`,`date`)VALUES('"+str(amount)+"','"+acc+"','"+str(book_id)+"','paid',curdate())"
-            res=db.insert(qry)
 
-            return redirect('/userviewmybooking')
-        return '''<script>alert('payment success');window.location='/userviewmybooking'</script>'''
-    else:
-        return '''<script>alert('Not Success');window.location='/userviewmybooking'</script>'''
+    amount=request.form['amount']
+    file=request.files["file"]
+    from datetime import  datetime
+    s= datetime.now().strftime("%Y%m%d%H%M%S")+".jpg"
+
+    file.save(static_path+ "files\\"+s)
+
+    p="/static/files/"+s
+
+
+    d = Db()
+    qry="INSERT INTO `payment`(`amount`,filename,`order_main_id`,`status`,`date`)VALUES('"+str(amount)+"','"+p+"','"+str(book_id)+"','paid',curdate())"
+    res=db.insert(qry)
+
+    return '''<script>alert('payment success');window.location='/userviewmybooking'</script>'''
 
 @app.route('/user_view_review/<id>')
 def user_view_review(id):
+
+
+
     db=Db()
+
+
+
+    qry="SELECT `shop_name` FROM `barber_shop` WHERE `shop_lid`='"+id+"'"
+    sd= db.selectOne(qry)
+
+
+
     qry="SELECT `review`.*,`users`.* FROM `review` INNER JOIN `users` ON `review`.`user_lid`=`users`.`user_lid` WHERE `review`.`shop_id`='"+id+"'"
     res=db.select(qry)
     qry2="select * from barber_shop where shop_lid='"+id+"'"
     res2=db.selectOne(qry2)
-    return render_template('user/view_review.html',data=res,data2=res2)
+    return render_template('user/view_review.html',data=res,data2=res2,sd=sd)
 
 @app.route('/user_add_review')
 def user_add_review():
@@ -609,6 +635,45 @@ def usersignup_post():
     qry="INSERT INTO `users`(user_lid,username,age,gender,phone,email,photo,place,post,pin) VALUES ('"+str(lid)+"','"+uname+"','"+age+"','"+gender+"','"+phone+"','"+email+"','"+file+"','"+place+"','"+post+"','"+pin+"')"
     db.insert(qry)
     return '''<script>alert("registration successfull");window.location="/"</script>'''
+
+
+@app.route('/usersignup_postedit',methods=['post'])
+def usersignup_postedit():
+    db=Db()
+    name=request.form['name']
+    age=request.form['age']
+    gender=request.form['gender']
+    phone=request.form['phone']
+    email=request.form['email']
+
+    place=request.form['place']
+    post=request.form['post']
+    pin=request.form['pin']
+    # pswd=request.form['textfield8']
+    if 'fileField' in request.files:
+        photo=request.files['fileField']
+        if photo.filename!="":
+
+            from datetime import datetime
+            filename = datetime.now().strftime("%Y%m%d%H%M%S")
+            photo.save(static_path + "\\photo\\" + filename + ".jpg")
+            file= "/static/photo/" + filename + ".jpg"
+
+            qry="update `users` set photo='"+file+"',username='"+name+"',age='"+age+"',gender='"+gender+"',phone='"+phone+"',email='"+email+"',place='"+place+"',post='"+post+"',pin='"+pin+"' where user_lid='"+str(session['lid'])+"'"
+            db.update(qry)
+        else:
+
+            qry="update `users` set username='"+name+"',age='"+age+"',gender='"+gender+"',phone='"+phone+"',email='"+email+"',place='"+place+"',post='"+post+"',pin='"+pin+"' where user_lid='"+str(session['lid'])+"'"
+            db.update(qry)
+
+    else:
+
+        qry = "update `users` set username='" + name + "',age='" + age + "',gender='" + gender + "',phone='" + phone + "',email='" + email + "',place='" + place + "',post='" + post + "',pin='" + pin + "' where user_lid='" + str(
+            session['lid']) + "'"
+        db.update(qry)
+
+    return '''<script>alert("Updated successfully");window.location="/userviewprofile"</script>'''
+
 
 @app.route("/user_viewbarbershops")
 def user_viewbarbershops():
@@ -657,7 +722,12 @@ def userviewprofile():
     return  render_template("user/view_profile.html",data=res)
 
 
-
+@app.route("/usereditprofile")
+def usereditprofile():
+    db=Db()
+    qry="SELECT * FROM `users` WHERE `user_lid`='"+str(session['lid'])+"'"
+    res=db.selectOne(qry)
+    return  render_template("user/edit_profile.html",data=res)
 
 
 
@@ -689,17 +759,38 @@ def barbershop_changepasswordpost():
 @app.route("/userviewservices/<slid>")
 def userviewservices(slid):
     session["shoplid"]=slid
+    from datetime import datetime
+    dt = datetime.now().strftime("%Y-%m-%d")
+
+
     db=Db()
+
+
+
+    qry="SELECT `shop_name` FROM `barber_shop` WHERE `shop_lid`='"+slid+"'"
+    sd= db.selectOne(qry)
+
+
+
+
     qry="SELECT * FROM `services` WHERE `service_lid`='"+slid+"'"
     res=db.select(qry)
-    return  render_template("user/viewservices.html",data=res)
+    return  render_template("user/viewservices.html",data=res,sd=sd,dt=dt)
 
 @app.route("/userviewreviews/<slid>")
 def userviewreviews(slid):
     db=Db()
+
+
+
+    qry="SELECT `shop_name` FROM `barber_shop` WHERE `shop_lid`='"+slid+"'"
+    sd= db.selectOne(qry)
+
+
+
     qry="SELECT `review`.*,`users`.* FROM `users` INNER JOIN `review` ON `review`.`user_lid`=`users`.`user_lid` WHERE `shop_id`='"+slid+"'"
     res=db.select(qry)
-    return  render_template("user/Review.html",data=res, slid=slid)
+    return  render_template("user/Review.html",data=res, slid=slid,sd=sd)
 
 
 
@@ -726,4 +817,4 @@ def user_changepasswordpost():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True,port=3000)

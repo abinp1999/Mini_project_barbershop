@@ -1,0 +1,67 @@
+{% extends "user/sub_index.html" %}
+{% block body %}
+<form action="/usersignup_postedit" method="post" enctype="multipart/form-data" name="form1" id="form1">
+
+    <img src="{{ data['photo'] }}" width="200px" height="200px"/>
+    <br>
+    <table>
+    <tr>
+      <td>Name</td>
+        <td><input type="text"  value="{{ data['username'] }}" class="form-control" required name="name"></td>
+    </tr>
+    <tr>
+      <td>Age</td>
+      <td><input type="text"  value="{{ data['age'] }}" class="form-control" required name="age"></td>
+    </tr>
+
+    <tr>
+      <td>Gender</td>
+      <td>
+          <select class="form-control" required name="gender">
+              <option value="Male">Male</option>
+              <option value="FeMale">FeMale</option>
+
+          </select>
+      </td>
+    </tr>
+
+    <tr>
+      <td>Place</td>
+      <td><input type="text"  value="{{ data['place'] }}" class="form-control" required name="place"></td>
+    </tr>
+    <tr>
+      <td>Post</td>
+      <td><input type="text"  value="{{ data['post'] }}" class="form-control" required name="post"></td>
+    </tr>
+    <tr>
+      <td>Pin</td>
+      <td><input type="text"  value="{{ data['pin'] }}" class="form-control" required name="pin"></td>
+    </tr>
+
+    <tr>
+      <td>Phone</td>
+      <td><input type="text"  value="{{ data['phone'] }}" class="form-control" required name="phone"></td>
+    </tr>
+        <rr>
+            <td>Photo</td>
+            <td> <input class="form-control" type="file" name="fileField" id="name" placeholder="Password" required/>
+
+ </td>
+        </rr>
+    <tr>
+      <td>Email</td>
+      <td><input type="text"  value="{{ data['email'] }}" class="form-control" required name="email"></td>
+    </tr>
+        <tr>
+            <td></td>
+            <td>
+                <input type="submit" class="btn btn-success" value="Update">
+            </td>
+        </tr>
+
+
+
+  </table>
+</form>
+
+{% endblock %}
